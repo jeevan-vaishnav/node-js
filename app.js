@@ -1,11 +1,29 @@
-// File System - Built-in Module
-const {readFileSync, writeFileSync} = require('fs');
+const { readFile, writeFile } = require('fs');
 
-const first  = readFileSync('./content/subfolder/first.txt', 'utf8');
-const second = readFileSync('./content/subfolder/second.txt', 'utf8');
-console.log(first);
-console.log(second)
+//readFile
+readFile('./content/subfolder/first.txt', 'utf8', (err, result) => {
+    if (err) {
+        console.log(err);
+        return
+    }
+    const firstResult = result;
+    readFile('./content/subfolder/second.txt', 'utf8', (err, result) => {
+        if (err) {
+        console.log(err);
 
-//wrtie to file
-writeFileSync('./content/subfolder/result-sync.txt',
-`Here is the result new : ${first}, ${second} `, {flag:'a'})
+            return
+        }
+        console.log('First:' + result)
+        const secondResult = result
+        const both = `${firstResult} ${secondResult}`
+        console.log("Reading File: " + both)
+        //write file
+        writeFile('./content/subfolder/result-async.txt', both, (err, result) => {
+            return result
+        })
+    })
+})
+
+
+
+
